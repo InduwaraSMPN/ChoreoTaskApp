@@ -4,8 +4,8 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 
 // Import middleware
-const authMiddleware = require('./middleware/auth')
-const errorHandler = require('./middleware/errorHandler')
+const { authMiddleware } = require('./middleware/auth')
+const { errorHandler } = require('./middleware/errorHandler')
 
 // Import routes
 const healthRoutes = require('./routes/health')
