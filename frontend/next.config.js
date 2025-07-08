@@ -24,13 +24,6 @@ const nextConfig = {
     NEXT_PUBLIC_DEBUG: process.env.NEXT_PUBLIC_DEBUG || 'false'
   },
   
-  
-  // Webpack configuration for additional optimizations
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Custom webpack configurations can be added here
-    return config;
-  },
-  
   // Note: headers, redirects, and rewrites are not supported with output: 'export'
   // These features are handled by Choreo's deployment infrastructure instead
 };
