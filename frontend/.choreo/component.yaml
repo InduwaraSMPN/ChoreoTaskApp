@@ -1,0 +1,91 @@
+# Choreo Component Configuration for Next.js Task Management Web Application
+# This file configures how Choreo builds and deploys the frontend web application
+
+# +required Version of the configuration file format
+version: 1.0
+
+# +required Component type - Web Application for frontend SPAs
+type: WebApplication
+
+# +required Component name and description
+name: task-management-web
+description: Modern Next.js web application for task management with Choreo managed authentication
+
+# +required Build configuration
+build:
+  # Use React buildpack (works for Next.js)
+  buildpack: react
+  # Specify Node.js version
+  nodeVersion: 18
+  # Build command for Next.js
+  buildCommand: npm run build
+  # Build output directory (Next.js static export)
+  buildPath: out
+
+# Web application specific configuration
+webApp:
+  # Enable managed authentication
+  managedAuth:
+    enabled: true
+    # Post-login redirect path
+    postLoginPath: /dashboard
+    # Post-logout redirect path  
+    postLogoutPath: /
+    # Error page path for auth errors
+    errorPath: /auth/error
+    # Session expiry time in minutes (7 days)
+    sessionExpiryTime: 10080
+    # Additional OAuth scopes (beyond default openid, profile, email)
+    additionalScopes: []
+
+# Environment-specific configurations
+environments:
+  # Development environment
+  Development:
+    # Environment variables for development
+    configs:
+      - name: NODE_ENV
+        value: development
+      - name: NEXT_PUBLIC_API_BASE_URL
+        value: /choreo-apis
+      - name: NEXT_PUBLIC_APP_NAME
+        value: Task Management (Dev)
+      - name: NEXT_PUBLIC_DEBUG
+        value: "true"
+  
+  # Production environment
+  Production:
+    # Environment variables for production
+    configs:
+      - name: NODE_ENV
+        value: production
+      - name: NEXT_PUBLIC_API_BASE_URL
+        value: /choreo-apis
+      - name: NEXT_PUBLIC_APP_NAME
+        value: Task Management
+      - name: NEXT_PUBLIC_DEBUG
+        value: "false"
+
+# Container resource configuration
+container:
+  # Memory limit (MB) - web apps typically need less than services
+  memory: 256
+  # CPU limit (millicores)
+  cpu: 250
+
+# Health check configuration for web application
+healthCheck:
+  # Health check endpoint (Next.js serves this automatically)
+  endpoint: /
+  # Port for health checks (default web port)
+  port: 3000
+  # Initial delay before first health check (seconds)
+  initialDelaySeconds: 30
+  # Interval between health checks (seconds)
+  periodSeconds: 30
+  # Number of consecutive failures before marking unhealthy
+  failureThreshold: 3
+  # Number of consecutive successes before marking healthy
+  successThreshold: 1
+  # Timeout for each health check (seconds)
+  timeoutSeconds: 10

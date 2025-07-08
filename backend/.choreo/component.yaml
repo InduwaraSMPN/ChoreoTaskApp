@@ -1,0 +1,85 @@
+# Choreo Component Configuration for Node.js Task Management API Service
+# This file configures how Choreo builds and deploys the backend service
+
+# +required Version of the configuration file format
+version: 1.0
+
+# +required Component type - Service for backend APIs
+type: Service
+
+# +required Component name and description
+name: task-management-api
+description: RESTful API service for task management with user authentication
+
+# +required Build configuration
+build:
+  # Use Node.js buildpack for building the service
+  buildpack: nodejs
+  # Specify Node.js version
+  buildpackVersion: 18.x
+  # Build command (optional, defaults to npm install)
+  buildCommand: npm install
+  # Start command for the service
+  startCommand: npm start
+
+# +required Endpoint configuration
+endpoints:
+  # Primary REST API endpoint
+  - name: task-api
+    type: REST
+    # Port the service listens on
+    port: 3001
+    # Context path for the API
+    context: /
+    # OpenAPI specification file
+    schemaFilePath: openapi.yaml
+    # Network visibility (Project = accessible within project)
+    networkVisibility: Project
+
+# Health check configuration
+healthCheck:
+  # Health check endpoint
+  endpoint: /health
+  # Port for health checks (same as service port)
+  port: 3001
+  # Initial delay before first health check (seconds)
+  initialDelaySeconds: 30
+  # Interval between health checks (seconds)
+  periodSeconds: 10
+  # Number of consecutive failures before marking unhealthy
+  failureThreshold: 3
+  # Number of consecutive successes before marking healthy
+  successThreshold: 1
+  # Timeout for each health check (seconds)
+  timeoutSeconds: 5
+
+# Container resource configuration
+container:
+  # Memory limit (MB)
+  memory: 512
+  # CPU limit (millicores)
+  cpu: 500
+
+# Environment-specific configurations
+environments:
+  # Development environment
+  Development:
+    # Environment variables for development
+    configs:
+      - name: NODE_ENV
+        value: development
+      - name: LOG_LEVEL
+        value: debug
+      - name: CORS_ORIGIN
+        value: "*"
+  
+  # Production environment  
+  Production:
+    # Environment variables for production
+    configs:
+      - name: NODE_ENV
+        value: production
+      - name: LOG_LEVEL
+        value: info
+      - name: CORS_ORIGIN
+        value: "https://*.choreoapps.dev"

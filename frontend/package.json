@@ -1,0 +1,61 @@
+{
+  "name": "choreo-task-management-web",
+  "version": "1.0.0",
+  "description": "Task Management web application for WSO2 Choreo full-stack sample",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "export": "next export"
+  },
+  "keywords": [
+    "choreo",
+    "nextjs",
+    "react",
+    "task-management",
+    "web-application",
+    "typescript"
+  ],
+  "author": "WSO2 Choreo Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "next": "^14.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.48.2",
+    "js-cookie": "^3.0.5",
+    "lucide-react": "^0.294.0",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.4",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@types/js-cookie": "^3.0.6",
+    "typescript": "^5.3.3",
+    "eslint": "^8.55.0",
+    "eslint-config-next": "^14.0.4",
+    "tailwindcss": "^3.3.6",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "@tailwindcss/forms": "^0.5.7"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/choreo-fullstack-sample.git",
+    "directory": "frontend"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/choreo-fullstack-sample/issues"
+  },
+  "homepage": "https://github.com/your-org/choreo-fullstack-sample#readme"
+}

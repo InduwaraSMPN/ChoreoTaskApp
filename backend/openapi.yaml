@@ -1,0 +1,441 @@
+openapi: 3.0.3
+info:
+  title: Choreo Task Management API
+  description: |
+    RESTful API service for task management with user authentication.
+    This API demonstrates WSO2 Choreo's service component capabilities including:
+    - User authentication integration
+    - CRUD operations for task management
+    - Health monitoring endpoints
+    - OpenAPI specification compliance
+  version: 1.0.0
+  contact:
+    name: WSO2 Choreo Team
+    url: https://wso2.com/choreo/
+    email: choreo@wso2.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: http://localhost:3001
+    description: Local development server
+  - url: https://your-choreo-service-url.dev
+    description: Choreo development environment
+
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Basic health check for service monitoring
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /health/detailed:
+    get:
+      summary: Detailed health check
+      description: Comprehensive health check with system information
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Detailed health information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedHealthResponse'
+
+  /api/tasks:
+    get:
+      summary: Get user tasks
+      description: Retrieve all tasks for the authenticated user
+      tags:
+        - Tasks
+      security:
+        - ChoreoAuth: []
+      parameters:
+        - name: status
+          in: query
+          description: Filter tasks by status
+          schema:
+            type: string
+            enum: [todo, in-progress, completed]
+        - name: priority
+          in: query
+          description: Filter tasks by priority
+          schema:
+            type: string
+            enum: [low, medium, high]
+        - name: sortBy
+          in: query
+          description: Sort tasks by field
+          schema:
+            type: string
+            enum: [createdAt, updatedAt, title, priority, dueDate]
+            default: createdAt
+        - name: sortOrder
+          in: query
+          description: Sort order
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+      responses:
+        '200':
+          description: Tasks retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskListResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+    post:
+      summary: Create new task
+      description: Create a new task for the authenticated user
+      tags:
+        - Tasks
+      security:
+        - ChoreoAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTaskRequest'
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /api/tasks/{id}:
+    get:
+      summary: Get task by ID
+      description: Retrieve a specific task by its ID
+      tags:
+        - Tasks
+      security:
+        - ChoreoAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Task ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Task retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    put:
+      summary: Update task
+      description: Update an existing task
+      tags:
+        - Tasks
+      security:
+        - ChoreoAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Task ID
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTaskRequest'
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+    delete:
+      summary: Delete task
+      description: Delete a specific task
+      tags:
+        - Tasks
+      security:
+        - ChoreoAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Task ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Task deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /api/user/profile:
+    get:
+      summary: Get user profile
+      description: Retrieve the authenticated user's profile information
+      tags:
+        - User
+      security:
+        - ChoreoAuth: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+components:
+  securitySchemes:
+    ChoreoAuth:
+      type: http
+      scheme: bearer
+      description: Choreo managed authentication
+
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique task identifier
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Task title
+        description:
+          type: string
+          maxLength: 1000
+          description: Task description
+        priority:
+          type: string
+          enum: [low, medium, high]
+          description: Task priority level
+        status:
+          type: string
+          enum: [todo, in-progress, completed]
+          description: Task status
+        dueDate:
+          type: string
+          format: date-time
+          nullable: true
+          description: Task due date
+        createdAt:
+          type: string
+          format: date-time
+          description: Task creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Task last update timestamp
+        userId:
+          type: string
+          description: ID of the user who owns the task
+        createdBy:
+          type: string
+          description: Name of the user who created the task
+
+    CreateTaskRequest:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 1000
+        priority:
+          type: string
+          enum: [low, medium, high]
+          default: medium
+        status:
+          type: string
+          enum: [todo, in-progress, completed]
+          default: todo
+        dueDate:
+          type: string
+          format: date-time
+          nullable: true
+
+    UpdateTaskRequest:
+      type: object
+      minProperties: 1
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 1000
+        priority:
+          type: string
+          enum: [low, medium, high]
+        status:
+          type: string
+          enum: [todo, in-progress, completed]
+        dueDate:
+          type: string
+          format: date-time
+          nullable: true
+
+    TaskResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        task:
+          $ref: '#/components/schemas/Task'
+
+    TaskListResponse:
+      type: object
+      properties:
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        total:
+          type: integer
+        filters:
+          type: object
+
+    UserProfileResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        profile:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            name:
+              type: string
+            username:
+              type: string
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        uptime:
+          type: integer
+        version:
+          type: string
+
+    DetailedHealthResponse:
+      allOf:
+        - $ref: '#/components/schemas/HealthResponse'
+        - type: object
+          properties:
+            system:
+              type: object
+            dependencies:
+              type: object
+            endpoints:
+              type: object
+
+    DeleteResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        taskId:
+          type: string
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+  responses:
+    UnauthorizedError:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+tags:
+  - name: Health
+    description: Health monitoring endpoints
+  - name: Tasks
+    description: Task management operations
+  - name: User
+    description: User profile and preferences
