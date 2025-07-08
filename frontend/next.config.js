@@ -36,56 +36,8 @@ const nextConfig = {
     return config;
   },
   
-  // Headers configuration for security and CORS
-  async headers() {
-    return [
-      {
-        // Apply security headers to all routes
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY'
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin'
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()'
-          }
-        ]
-      }
-    ];
-  },
-  
-  // Redirects configuration
-  async redirects() {
-    return [
-      // Redirect root to dashboard for authenticated users
-      // Note: This will be handled by the app logic instead
-    ];
-  },
-  
-  // Rewrites configuration for API proxying in development
-  async rewrites() {
-    // In production, Choreo handles the API routing via connections
-    // In development, you might want to proxy to local backend
-    if (process.env.NODE_ENV === 'development') {
-      return [
-        {
-          source: '/choreo-apis/:path*',
-          destination: 'http://localhost:3001/api/:path*'
-        }
-      ];
-    }
-    return [];
-  }
+  // Note: headers, redirects, and rewrites are not supported with output: 'export'
+  // These features are handled by Choreo's deployment infrastructure instead
 };
 
 module.exports = nextConfig;

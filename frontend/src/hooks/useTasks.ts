@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import { Task, TaskFilters, TaskStats, CreateTaskRequest, UpdateTaskRequest } from '@/types'
-import { taskApi, getErrorMessage } from '@/lib/api'
+import { getErrorMessage, taskApi } from '@/lib/api'
+import { CreateTaskRequest, Task, TaskFilters, TaskStats, UpdateTaskRequest } from '@/types'
+import { useCallback, useEffect, useState } from 'react'
 
 interface UseTasksReturn {
   tasks: Task[]
@@ -31,12 +31,12 @@ export function useTasks(): UseTasksReturn {
   // Load tasks when filters change
   useEffect(() => {
     loadTasks()
-  }, [filters])
+  }, [filters]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load initial data
   useEffect(() => {
     loadInitialData()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadInitialData = async () => {
     await Promise.all([

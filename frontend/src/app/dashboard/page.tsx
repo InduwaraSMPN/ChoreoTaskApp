@@ -5,6 +5,7 @@ import FilterBar from '@/components/FilterBar'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import TaskForm from '@/components/TaskForm'
 import TaskList from '@/components/TaskList'
+import { ToastContainer, useToast } from '@/components/Toast'
 import UserProfile from '@/components/UserProfile'
 import { getErrorMessage, taskApi } from '@/lib/api'
 import { authService } from '@/lib/auth'
@@ -15,7 +16,7 @@ import { useEffect, useState } from 'react'
 export default function DashboardPage() {
   // State management
   const [user, setUser] = useState<User | null>(null)
-  const { toasts, removeToast, success, error } = useToast()
+  const { toasts, removeToast, success, error: showError } = useToast()
   const [tasks, setTasks] = useState<Task[]>([])
   const [taskStats, setTaskStats] = useState<TaskStats | null>(null)
   const [filters, setFilters] = useState<TaskFilters>({})
@@ -28,14 +29,14 @@ export default function DashboardPage() {
   // Authentication and initial data loading
   useEffect(() => {
     initializeDashboard()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load tasks when filters change
   useEffect(() => {
     if (user) {
       loadTasks()
     }
-  }, [filters, user])
+  }, [filters, user]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const initializeDashboard = async () => {
     try {
@@ -95,7 +96,7 @@ export default function DashboardPage() {
       success('Task created', 'Your new task has been created successfully')
     } catch (err) {
       console.error('Error creating task:', err)
-      error('Failed to create task', getErrorMessage(err))
+      showError('Failed to create task', getErrorMessage(err))
     }
   }
 
@@ -112,7 +113,7 @@ export default function DashboardPage() {
       success('Task updated', 'Your task has been updated successfully')
     } catch (err) {
       console.error('Error updating task:', err)
-      error('Failed to update task', getErrorMessage(err))
+      showError('Failed to update task', getErrorMessage(err))
     }
   }
 

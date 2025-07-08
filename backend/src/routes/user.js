@@ -3,8 +3,8 @@
  * Handles user information and profile management
  */
 
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
 /**
  * GET /api/user/profile
@@ -21,13 +21,13 @@ router.get('/profile', (req, res) => {
     roles: req.user.roles || [],
     lastLogin: new Date().toISOString(),
     profileComplete: !!(req.user.name && req.user.email)
-  };
+  }
 
   res.json({
     message: 'User profile retrieved successfully',
     profile: userProfile
-  });
-});
+  })
+})
 
 /**
  * GET /api/user/preferences
@@ -50,13 +50,13 @@ router.get('/preferences', (req, res) => {
       tasksPerPage: 10,
       showCompletedTasks: false
     }
-  };
+  }
 
   res.json({
     message: 'User preferences retrieved successfully',
     preferences: defaultPreferences
-  });
-});
+  })
+})
 
 /**
  * PUT /api/user/preferences
@@ -68,21 +68,21 @@ router.put('/preferences', (req, res) => {
     ...req.body,
     updatedAt: new Date().toISOString(),
     updatedBy: req.user.sub
-  };
+  }
 
   res.json({
     message: 'User preferences updated successfully',
     preferences: updatedPreferences
-  });
-});
+  })
+})
 
 /**
  * GET /api/user/activity
  * Get user activity summary
  */
 router.get('/activity', (req, res) => {
-  const userId = req.user.sub;
-  
+  const userId = req.user.sub
+
   // In a real application, this would query actual activity data
   const activitySummary = {
     userId,
@@ -115,13 +115,13 @@ router.get('/activity', (req, res) => {
         timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString()
       }
     ]
-  };
+  }
 
   res.json({
     message: 'User activity retrieved successfully',
     activity: activitySummary
-  });
-});
+  })
+})
 
 /**
  * POST /api/user/logout
@@ -130,12 +130,12 @@ router.get('/activity', (req, res) => {
 router.post('/logout', (req, res) => {
   // In a real application, you might clean up server-side session data here
   // For Choreo managed auth, the actual logout is handled by the frontend
-  
+
   res.json({
     message: 'Logout processed successfully',
     timestamp: new Date().toISOString()
-  });
-});
+  })
+})
 
 /**
  * GET /api/user/permissions
@@ -161,12 +161,12 @@ router.get('/permissions', (req, res) => {
       canExportData: false,
       canManageTeam: false
     }
-  };
+  }
 
   res.json({
     message: 'User permissions retrieved successfully',
     permissions
-  });
-});
+  })
+})
 
-module.exports = router;
+module.exports = router

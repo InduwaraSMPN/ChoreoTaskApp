@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { CreateTaskRequest, Task, UpdateTaskRequest } from '@/types'
+import { Calendar, Clock, Flag, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { X, Calendar, Flag, Clock } from 'lucide-react'
-import { Task, CreateTaskRequest, UpdateTaskRequest } from '@/types'
 
 interface TaskFormProps {
   task?: Task | null
@@ -88,7 +88,7 @@ export default function TaskForm({ task, onSubmit, onCancel, isLoading = false }
 
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">

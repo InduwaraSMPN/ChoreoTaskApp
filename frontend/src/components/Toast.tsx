@@ -1,7 +1,7 @@
 'use client'
 
+import { AlertCircle, CheckCircle, Info, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { CheckCircle, AlertCircle, Info, X } from 'lucide-react'
 
 export interface ToastProps {
   id: string
@@ -36,7 +36,7 @@ export default function Toast({
       }, duration)
       return () => clearTimeout(timer)
     }
-  }, [duration])
+  }, [duration]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClose = () => {
     setIsExiting(true)

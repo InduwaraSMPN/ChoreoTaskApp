@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { CheckCircle, Clock, Users, ArrowRight, Github, ExternalLink } from 'lucide-react'
+import { ArrowRight, CheckCircle, Clock, ExternalLink, Github, Users } from 'lucide-react'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -102,7 +102,7 @@ export default function HomePage() {
               User Authentication
             </h3>
             <p className="text-secondary-600">
-              Secure authentication powered by Choreo's managed authentication system. 
+              Secure authentication powered by Choreo&apos;s managed authentication system.
               No complex setup required - just focus on your application logic.
             </p>
           </div>
