@@ -2,7 +2,7 @@
 # This file configures how Choreo builds and deploys the backend service
 
 # +required Version of the configuration file format
-version: 1.0
+version: "1.0"
 
 # +required Component type - Service for backend APIs
 type: Service
@@ -16,7 +16,7 @@ build:
   # Use Node.js buildpack for building the service
   buildpack: nodejs
   # Specify Node.js version
-  buildpackVersion: 18.x
+  buildpackVersion: "18"
   # Build command (optional, defaults to npm install)
   buildCommand: npm install
   # Start command for the service
@@ -73,7 +73,7 @@ environments:
       - name: CORS_ORIGIN
         value: "*"
   
-  # Production environment  
+  # Production environment
   Production:
     # Environment variables for production
     configs:
@@ -82,4 +82,4 @@ environments:
       - name: LOG_LEVEL
         value: info
       - name: CORS_ORIGIN
-        value: "https://*.choreoapps.dev"
+        value: https://*.choreoapps.dev

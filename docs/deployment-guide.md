@@ -66,7 +66,7 @@ The deployment process involves:
 3. **Component Details**
    - **Component Display Name**: `Task Management API`
    - **Component Name**: `task-management-api` (must be unique)
-   - **Description**: `RESTful API service for task management`
+   - **Description**: `RESTful API service for task management with user authentication`
 
 4. **Click Create**
 
@@ -144,7 +144,7 @@ The deployment process involves:
 3. **Component Details**
    - **Component Display Name**: `Task Management Web`
    - **Component Name**: `task-management-web` (must be unique)
-   - **Description**: `Modern web application for task management`
+   - **Description**: `Modern Next.js web application for task management with Choreo managed authentication`
 
 4. **Click Create**
 
@@ -178,6 +178,8 @@ The deployment process involves:
    - **Session Expiry Time**: `10080` (7 days in minutes)
    - **Additional Scopes**: Leave empty for default
    - Click **Deploy**
+   demo
+   qP#bJZ96
 
 4. **Monitor Deployment**
    - Wait for deployment to complete

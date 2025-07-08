@@ -2,7 +2,7 @@
 # This file configures how Choreo builds and deploys the frontend web application
 
 # +required Version of the configuration file format
-version: 1.0
+version: "1.0"
 
 # +required Component type - Web Application for frontend SPAs
 type: WebApplication

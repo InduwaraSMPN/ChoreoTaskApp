@@ -51,11 +51,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/choreo-fullstack-sample.git",
+    "url": "https://github.com/InduwaraSMPN/ChoreoTaskApp.git",
     "directory": "frontend"
   },
   "bugs": {
-    "url": "https://github.com/your-org/choreo-fullstack-sample/issues"
+    "url": "https://github.com/InduwaraSMPN/ChoreoTaskApp/issues"
   },
-  "homepage": "https://github.com/your-org/choreo-fullstack-sample#readme"
+  "homepage": "https://github.com/InduwaraSMPN/ChoreoTaskApp#readme"
 }
