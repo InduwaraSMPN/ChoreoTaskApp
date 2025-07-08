@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "build": "echo 'Build completed - no build step required for Node.js API'",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint src/",

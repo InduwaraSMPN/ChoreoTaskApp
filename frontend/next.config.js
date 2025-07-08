@@ -24,11 +24,6 @@ const nextConfig = {
     NEXT_PUBLIC_DEBUG: process.env.NEXT_PUBLIC_DEBUG || 'false'
   },
   
-  // Experimental features
-  experimental: {
-    // Enable app directory (Next.js 13+ App Router)
-    appDir: true
-  },
   
   // Webpack configuration for additional optimizations
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {

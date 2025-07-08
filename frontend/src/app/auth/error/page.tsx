@@ -1,11 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
 import { AlertCircle, Home, RefreshCw } from 'lucide-react'
-import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useEffect, useState } from 'react'
 
-export default function AuthErrorPage() {
+function AuthErrorContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [errorCode, setErrorCode] = useState<string | null>(null)
@@ -132,5 +131,29 @@ export default function AuthErrorPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function AuthErrorPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-secondary-50 flex items-center justify-center px-4">
+        <div className="max-w-md w-full">
+          <div className="card p-8 text-center">
+            <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <AlertCircle className="w-8 h-8 text-secondary-600" />
+            </div>
+            <h1 className="text-2xl font-bold text-secondary-900 mb-4">
+              Loading...
+            </h1>
+            <p className="text-secondary-600">
+              Please wait while we load the error details.
+            </p>
+          </div>
+        </div>
+      </div>
+    }>
+      <AuthErrorContent />
+    </Suspense>
   )
 }
