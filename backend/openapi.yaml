@@ -12,6 +12,18 @@ servers:
       default: http://localhost
 
 paths:
+  /:
+    get:
+      summary: "Root Endpoint"
+      description: "Root endpoint that provides API information and status."
+      responses:
+        '200':
+          description: "API information and status."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootResponse'
+
   /health:
     get:
       summary: "Health Check"
@@ -91,20 +103,23 @@ components:
           description: "The server's confirmation message."
           example: "Task created successfully"
         task:
-          type: object
-          properties:
-            id:
-              type: string
-              description: "Task ID"
-              example: "123e4567-e89b-12d3-a456-426614174000"
-            title:
-              type: string
-              description: "Task title"
-              example: "Complete project documentation"
-            description:
-              type: string
-              description: "Task description"
-              example: "Write comprehensive documentation for the project"
+          $ref: '#/components/schemas/Task'
+
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Task ID"
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        title:
+          type: string
+          description: "Task title"
+          example: "Complete project documentation"
+        description:
+          type: string
+          description: "Task description"
+          example: "Write comprehensive documentation for the project"
 
     TaskListResponse:
       type: object
@@ -112,17 +127,28 @@ components:
         tasks:
           type: array
           items:
-            type: object
-            properties:
-              id:
-                type: string
-                description: "Task ID"
-              title:
-                type: string
-                description: "Task title"
-              description:
-                type: string
-                description: "Task description"
+            $ref: '#/components/schemas/Task'
+
+    RootResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: "API name and description"
+          example: "Choreo Task Management API"
+        version:
+          type: string
+          description: "API version"
+          example: "1.0.0"
+        status:
+          type: string
+          description: "Service status"
+          example: "running"
+        timestamp:
+          type: string
+          format: date-time
+          description: "Current timestamp"
+          example: "2025-07-09T15:30:00.123Z"
 
     HealthResponse:
       type: object

@@ -103,7 +103,7 @@ The deployment process involves:
 
 4. **Review Endpoint Details**
    - Verify the endpoint configuration
-   - Ensure port 8080 is configured
+   - Ensure port 3001 is configured
    - Check health check endpoint `/health`
    - Click **Deploy**
 
