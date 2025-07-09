@@ -4,7 +4,8 @@ info:
   version: "1.0.0"
   description: "RESTful API service for task management with user authentication."
 servers:
-- url: "http://localhost:3001"
+- url: "/"
+  description: "Choreo managed endpoint"
 
 paths:
   /health:

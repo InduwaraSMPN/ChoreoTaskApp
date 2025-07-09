@@ -1,12 +1,12 @@
 schemaVersion: "1.2"
 endpoints:
-    - name: task-management-api
-      displayName: Task Management API
-      service:
-        basePath: /
-        port: 3001
-      type: REST
-      networkVisibilities:
-        - Project
-        - Public
-      schemaFilePath: /openapi.yaml
+  - name: task-management-api
+    displayName: Task Management API
+    service:
+      basePath: /
+      port: 3001
+    type: REST
+    networkVisibilities:
+      - Project
+      - Public
+    schemaFilePath: openapi.yaml
