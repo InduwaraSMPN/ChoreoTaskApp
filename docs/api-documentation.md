@@ -602,17 +602,17 @@ cd backend
 npm install
 npm run dev
 
-# API will be available at http://localhost:3001
+# API will be available at http://localhost:8080
 ```
 
 ### Testing Endpoints
 
 ```bash
 # Health check
-curl http://localhost:3001/health
+curl http://localhost:8080/health
 
 # Test with mock authentication (development mode)
-curl -X GET http://localhost:3001/api/tasks \
+curl -X GET http://localhost:8080/api/tasks \
   -H "Content-Type: application/json"
 ```
 
@@ -620,7 +620,7 @@ curl -X GET http://localhost:3001/api/tasks \
 
 ```bash
 NODE_ENV=development
-PORT=3001
+PORT=8080
 LOG_LEVEL=debug
 CORS_ORIGIN=*
 ```

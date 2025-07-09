@@ -75,7 +75,7 @@ This is a comprehensive full-stack sample application demonstrating modern web d
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   Next.js Web   │    │  Choreo Gateway  │    │  Node.js API    │
 │   Application   │◄──►│  + Auth Proxy    │◄──►│    Service      │
-│   (Port 3000)   │    │                  │    │   (Port 3001)   │
+│   (Port 3000)   │    │                  │    │   (Port 8080)   │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
 ```
 

@@ -123,7 +123,7 @@ function Start-DevServers {
     Write-ColorOutput $Blue "Starting development servers..."
     
     # Start backend server in background
-    Write-ColorOutput $Yellow "Starting backend server on http://localhost:3001..."
+    Write-ColorOutput $Yellow "Starting backend server on http://localhost:8080..."
     Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd backend; npm run dev" -WindowStyle Normal
     
     Start-Sleep -Seconds 3
@@ -136,7 +136,7 @@ function Start-DevServers {
     
     Write-ColorOutput $Green "✓ Development servers started!"
     Write-ColorOutput $Blue "Frontend: http://localhost:3000"
-    Write-ColorOutput $Blue "Backend:  http://localhost:3001"
+    Write-ColorOutput $Blue "Backend:  http://localhost:8080"
     Write-ColorOutput $Yellow "Press Ctrl+C in each terminal to stop the servers"
 }
 
@@ -185,7 +185,7 @@ function Show-NextSteps {
     Write-Host ""
     Write-Host "2. Access the application:"
     Write-Host "   Frontend: http://localhost:3000"
-    Write-Host "   Backend:  http://localhost:3001"
+    Write-Host "   Backend:  http://localhost:8080"
     Write-Host ""
     Write-Host "3. Deploy to Choreo:"
     Write-Host "   See docs/deployment-guide.md for detailed instructions"

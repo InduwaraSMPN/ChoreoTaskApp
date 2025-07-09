@@ -41,7 +41,7 @@ Error: listen EADDRINUSE: address already in use :::3000
    ```
 2. Or use a different port:
    ```bash
-   npm run dev -- --port 3001
+   npm run dev -- --port 8080
    ```
 
 #### Module Not Found Errors
@@ -111,7 +111,7 @@ Module not found: Can't resolve '@/components/TaskList'
 
 **Problem**: Browser blocks API requests
 ```
-Access to fetch at 'http://localhost:3001/api/tasks' from origin 'http://localhost:3000' has been blocked by CORS policy
+Access to fetch at 'http://localhost:8080/api/tasks' from origin 'http://localhost:3000' has been blocked by CORS policy
 ```
 
 **Solution**:
@@ -130,7 +130,7 @@ Access to fetch at 'http://localhost:3001/api/tasks' from origin 'http://localho
 
 **Problem**: Frontend can't connect to backend
 ```
-Error: connect ECONNREFUSED 127.0.0.1:3001
+Error: connect ECONNREFUSED 127.0.0.1:8080
 ```
 
 **Solution**:
@@ -273,12 +273,12 @@ JavaScript heap out of memory
 
 2. **Health Check Testing**:
    ```bash
-   curl http://localhost:3001/health
+   curl http://localhost:8080/health
    ```
 
 3. **API Testing**:
    ```bash
-   curl -X GET http://localhost:3001/api/tasks \
+   curl -X GET http://localhost:8080/api/tasks \
      -H "Content-Type: application/json"
    ```
 

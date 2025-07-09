@@ -16,7 +16,7 @@ const userRoutes = require('./routes/user')
 const app = express()
 
 // Configuration
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 8080
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const CORS_ORIGIN = process.env.CORS_ORIGIN || '*'
 

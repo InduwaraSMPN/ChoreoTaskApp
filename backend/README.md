@@ -95,8 +95,8 @@ req.user = {
    ```
 
 3. **Access the API**
-   - API Base URL: http://localhost:3001
-   - Health Check: http://localhost:3001/health
+   - API Base URL: http://localhost:8080
+   - Health Check: http://localhost:8080/health
    - API Documentation: View `openapi.yaml` in Swagger Editor
 
 ### Development Scripts
@@ -111,7 +111,7 @@ npm run lint:fix     # Fix linting issues
 ### Environment Variables
 ```bash
 NODE_ENV=development        # Environment mode
-PORT=3001                  # Server port
+PORT=8080                  # Server port
 LOG_LEVEL=debug            # Logging level
 CORS_ORIGIN=*              # CORS origin (use specific domains in production)
 ```
@@ -133,7 +133,7 @@ CORS_ORIGIN=*              # CORS origin (use specific domains in production)
 
 ### Step 3: Configure Component
 The `.choreo/component.yaml` file contains all necessary configuration:
-- Service port: 3001
+- Service port: 8080
 - Health check endpoint: `/health`
 - OpenAPI specification: `openapi.yaml`
 - Environment-specific settings
@@ -154,7 +154,7 @@ The `.choreo/component.yaml` file contains all necessary configuration:
 ### Choreo Component Configuration
 The `.choreo/component.yaml` file configures:
 - **Build Settings**: Node.js buildpack, version, commands
-- **Endpoints**: REST API on port 3001 with OpenAPI spec
+- **Endpoints**: REST API on port 8080 with OpenAPI spec
 - **Health Checks**: Monitoring configuration
 - **Resources**: Memory and CPU limits
 - **Environment Variables**: Per-environment configuration
@@ -191,19 +191,19 @@ The service exposes metrics for monitoring:
 ### Manual Testing
 1. **Health Check**
    ```bash
-   curl http://localhost:3001/health
+   curl http://localhost:8080/health
    ```
 
 2. **Create Task** (requires auth in production)
    ```bash
-   curl -X POST http://localhost:3001/api/tasks \
+   curl -X POST http://localhost:8080/api/tasks \
      -H "Content-Type: application/json" \
      -d '{"title": "Test Task", "description": "Test Description"}'
    ```
 
 3. **Get Tasks**
    ```bash
-   curl http://localhost:3001/api/tasks
+   curl http://localhost:8080/api/tasks
    ```
 
 ### Automated Testing

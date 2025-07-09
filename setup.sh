@@ -157,7 +157,7 @@ function start_dev_servers() {
         
         print_color $GREEN "✓ Development servers started in tmux session!"
         print_color $BLUE "Frontend: http://localhost:3000"
-        print_color $BLUE "Backend:  http://localhost:3001"
+        print_color $BLUE "Backend:  http://localhost:8080"
         print_color $YELLOW "Run 'tmux attach -t choreo-dev' to view the servers"
         print_color $YELLOW "Run 'tmux kill-session -t choreo-dev' to stop the servers"
     else
@@ -180,7 +180,7 @@ function start_dev_servers() {
         
         print_color $GREEN "✓ Development servers started!"
         print_color $BLUE "Frontend: http://localhost:3000 (PID: $FRONTEND_PID)"
-        print_color $BLUE "Backend:  http://localhost:3001 (PID: $BACKEND_PID)"
+        print_color $BLUE "Backend:  http://localhost:8080 (PID: $BACKEND_PID)"
         print_color $YELLOW "Use 'kill $BACKEND_PID $FRONTEND_PID' to stop the servers"
     fi
 }
@@ -230,7 +230,7 @@ function show_next_steps() {
     echo ""
     echo "2. Access the application:"
     echo "   Frontend: http://localhost:3000"
-    echo "   Backend:  http://localhost:3001"
+    echo "   Backend:  http://localhost:8080"
     echo ""
     echo "3. Deploy to Choreo:"
     echo "   See docs/deployment-guide.md for detailed instructions"
