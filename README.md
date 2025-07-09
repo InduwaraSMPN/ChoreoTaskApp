@@ -102,13 +102,19 @@ choreo-fullstack-sample/
 
 ## 🔐 Authentication Flow
 
-This application uses Choreo's managed authentication system:
+This application uses Choreo's managed authentication system following the [official guide](https://medium.com/choreo-tech-blog/secure-your-react-spas-with-choreo-managed-authentication-8b7d2d45147b):
 
 1. **User Login**: Frontend redirects to `/auth/login`
 2. **Choreo Handles Auth**: OIDC flow with built-in identity provider
 3. **Session Management**: Secure cookies for API access
 4. **API Calls**: Authenticated requests via `/choreo-apis/` prefix
 5. **Session Expiry**: Automatic re-login on 401 responses
+
+### 📚 Detailed Documentation
+
+- **[Authentication Implementation Guide](docs/choreo-authentication-implementation.md)** - Complete technical implementation details
+- **[Deployment Configuration Guide](docs/choreo-deployment-config.md)** - Step-by-step deployment instructions
+- **[Authentication Flow Diagram](docs/authentication-flow.md)** - Visual flow and technical details
 
 ## 🚀 Deployment to Choreo
 

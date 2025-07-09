@@ -2,15 +2,159 @@ openapi: 3.0.3
 info:
   title: Choreo Task Management API
   version: 1.0.0
-  description: API for task management with user authentication.
+  description: |
+    A comprehensive task management API with user authentication using Choreo managed authentication.
+
+    ## Authentication
+    This API uses Choreo's managed authentication system which handles:
+    - User login/logout via OIDC/OAuth2.0
+    - Session management with secure cookies
+    - JWT assertion headers for backend authentication
+    - Automatic token refresh and session handling
+
+    ## Usage
+    When deployed on Choreo with managed authentication enabled:
+    1. Frontend redirects to `/auth/login` for user authentication
+    2. Choreo handles the OIDC flow and sets session cookies
+    3. API calls include cookies automatically for authentication
+    4. Backend receives user info via `x-jwt-assertion` header
+
+  contact:
+    name: WSO2 Choreo Team
+    url: https://wso2.com/choreo
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
 servers:
   - url: http://localhost:8080
+    description: Local development server
+  - url: https://your-api-url.choreoapis.dev
+    description: Choreo deployment server (replace with actual URL)
+
+tags:
+  - name: Health
+    description: Health check and system status endpoints
+  - name: Tasks
+    description: Task management operations (requires authentication)
+  - name: User
+    description: User profile and authentication-related operations
+
+components:
+  securitySchemes:
+    ChoreoAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Choreo managed authentication via JWT assertion header.
+        When deployed on Choreo with managed authentication enabled,
+        the platform automatically validates user sessions and passes
+        user information via the x-jwt-assertion header.
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: User's unique identifier (sub claim)
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "user@example.com"
+        name:
+          type: string
+          description: User's full name
+          example: "John Doe"
+        username:
+          type: string
+          description: User's preferred username
+          example: "johndoe"
+        groups:
+          type: array
+          items:
+            type: string
+          description: User's group memberships
+          example: ["users", "developers"]
+        roles:
+          type: array
+          items:
+            type: string
+          description: User's assigned roles
+          example: ["user", "task_manager"]
+
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Task's unique identifier
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        title:
+          type: string
+          description: Task title
+          example: "Complete project documentation"
+        description:
+          type: string
+          description: Task description
+          example: "Write comprehensive documentation for the project"
+        status:
+          type: string
+          enum: ["todo", "in-progress", "completed"]
+          description: Task status
+          example: "todo"
+        priority:
+          type: string
+          enum: ["low", "medium", "high", "urgent"]
+          description: Task priority
+          example: "medium"
+        createdAt:
+          type: string
+          format: date-time
+          description: Task creation timestamp
+          example: "2025-07-09T15:30:00.123Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Task last update timestamp
+          example: "2025-07-09T15:30:00.123Z"
+        userId:
+          type: string
+          description: ID of the user who owns this task
+          example: "123e4567-e89b-12d3-a456-426614174000"
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error type or code
+          example: "Unauthorized"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Authentication required"
+        timestamp:
+          type: string
+          format: date-time
+          description: Error occurrence timestamp
+          example: "2025-07-09T15:30:00.123Z"
+
+# Global security requirement - all endpoints require authentication unless explicitly overridden
+security:
+  - ChoreoAuth: []
 
 paths:
   /:
     get:
       summary: Root Endpoint
       description: Root endpoint that provides API information and status.
+      tags:
+        - Health
+      security: []  # No authentication required for root endpoint
       responses:
         '200':
           description: API information and status
@@ -32,11 +176,17 @@ paths:
                     type: string
                     format: date-time
                     example: "2025-07-09T15:30:00.123Z"
+                  environment:
+                    type: string
+                    example: "development"
 
   /health:
     get:
       summary: Health Check
       description: A simple endpoint to verify that the service is running.
+      tags:
+        - Health
+      security: []  # No authentication required for health check
       responses:
         '200':
           description: Service is available
@@ -56,7 +206,26 @@ paths:
   /api/tasks:
     get:
       summary: Get Tasks
-      description: Retrieve all tasks for the authenticated user.
+      description: |
+        Retrieve all tasks for the authenticated user.
+        Requires valid Choreo managed authentication.
+      tags:
+        - Tasks
+      parameters:
+        - name: status
+          in: query
+          description: Filter tasks by status
+          required: false
+          schema:
+            type: string
+            enum: ["todo", "in-progress", "completed"]
+        - name: priority
+          in: query
+          description: Filter tasks by priority
+          required: false
+          schema:
+            type: string
+            enum: ["low", "medium", "high", "urgent"]
       responses:
         '200':
           description: Tasks retrieved successfully
@@ -65,36 +234,42 @@ paths:
               schema:
                 type: object
                 properties:
+                  message:
+                    type: string
+                    example: "Tasks retrieved successfully"
                   tasks:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                          example: "123e4567-e89b-12d3-a456-426614174000"
-                        title:
-                          type: string
-                          example: "Complete project documentation"
-                        description:
-                          type: string
-                          example: "Write comprehensive documentation for the project"
+                      $ref: '#/components/schemas/Task'
+                  total:
+                    type: integer
+                    description: Total number of tasks
+                    example: 5
+                  user:
+                    $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized - Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '400':
           description: Bad Request
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Invalid request"
+                $ref: '#/components/schemas/Error'
 
     post:
       summary: Create Task
-      description: Create a new task for the authenticated user.
+      description: |
+        Create a new task for the authenticated user.
+        The task will be automatically associated with the authenticated user.
+      tags:
+        - Tasks
       requestBody:
         required: true
+        description: Task creation data
         content:
           application/json:
             schema:
@@ -102,14 +277,29 @@ paths:
               properties:
                 title:
                   type: string
+                  description: Task title (required)
                   example: "Complete project documentation"
+                  minLength: 1
+                  maxLength: 200
                 description:
                   type: string
+                  description: Task description (optional)
                   example: "Write comprehensive documentation for the project"
+                  maxLength: 1000
+                priority:
+                  type: string
+                  enum: ["low", "medium", "high", "urgent"]
+                  description: Task priority (optional, defaults to medium)
+                  example: "medium"
+                status:
+                  type: string
+                  enum: ["todo", "in-progress", "completed"]
+                  description: Task status (optional, defaults to todo)
+                  example: "todo"
               required:
                 - title
       responses:
-        '200':
+        '201':
           description: Task created successfully
           content:
             application/json:
@@ -120,25 +310,113 @@ paths:
                     type: string
                     example: "Task created successfully"
                   task:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        example: "123e4567-e89b-12d3-a456-426614174000"
-                      title:
-                        type: string
-                        example: "Complete project documentation"
-                      description:
-                        type: string
-                        example: "Write comprehensive documentation for the project"
+                    $ref: '#/components/schemas/Task'
         '400':
-          description: Bad Request - Required fields missing
+          description: Bad Request - Invalid input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized - Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/user/profile:
+    get:
+      summary: Get User Profile
+      description: |
+        Retrieve the authenticated user's profile information.
+        Returns user details extracted from Choreo authentication.
+      tags:
+        - User
+      responses:
+        '200':
+          description: User profile retrieved successfully
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  error:
+                  message:
                     type: string
-                    example: "Title is required"
+                    example: "User profile retrieved successfully"
+                  profile:
+                    allOf:
+                      - $ref: '#/components/schemas/User'
+                      - type: object
+                        properties:
+                          lastLogin:
+                            type: string
+                            format: date-time
+                            description: Last login timestamp
+                            example: "2025-07-09T15:30:00.123Z"
+                          profileComplete:
+                            type: boolean
+                            description: Whether the user profile is complete
+                            example: true
+        '401':
+          description: Unauthorized - Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/user/permissions:
+    get:
+      summary: Get User Permissions
+      description: |
+        Retrieve the authenticated user's permissions and roles.
+        Returns permissions based on user's groups and roles from authentication.
+      tags:
+        - User
+      responses:
+        '200':
+          description: User permissions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User permissions retrieved successfully"
+                  userId:
+                    type: string
+                    example: "123e4567-e89b-12d3-a456-426614174000"
+                  roles:
+                    type: array
+                    items:
+                      type: string
+                    example: ["user", "task_manager"]
+                  groups:
+                    type: array
+                    items:
+                      type: string
+                    example: ["users", "developers"]
+                  permissions:
+                    type: array
+                    items:
+                      type: string
+                    example: ["tasks:read", "tasks:create", "tasks:update", "tasks:delete"]
+                  features:
+                    type: object
+                    properties:
+                      canCreateTasks:
+                        type: boolean
+                        example: true
+                      canDeleteTasks:
+                        type: boolean
+                        example: true
+                      canViewAnalytics:
+                        type: boolean
+                        example: true
+        '401':
+          description: Unauthorized - Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 

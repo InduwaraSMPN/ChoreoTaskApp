@@ -51,7 +51,28 @@ x-jwt-assertion: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ---
 
-## 🏥 Health Endpoints
+## � Root Endpoint
+
+### GET /
+
+Root endpoint that provides basic API information and status.
+
+**Authentication**: Not required
+
+**Response:**
+```json
+{
+  "message": "Choreo Task Management API",
+  "version": "1.0.0",
+  "status": "running",
+  "timestamp": "2024-01-15T10:30:00.000Z",
+  "environment": "development"
+}
+```
+
+---
+
+## �🏥 Health Endpoints
 
 ### GET /health
 
@@ -406,8 +427,71 @@ Get user activity summary and recent actions.
         "type": "task_completed",
         "description": "Completed task: Review project proposal",
         "timestamp": "2024-01-15T08:30:00.000Z"
+      },
+      {
+        "id": "2",
+        "type": "task_created",
+        "description": "Created task: Prepare presentation slides",
+        "timestamp": "2024-01-15T04:30:00.000Z"
+      },
+      {
+        "id": "3",
+        "type": "task_updated",
+        "description": "Updated task priority: Fix bug in authentication",
+        "timestamp": "2024-01-15T02:30:00.000Z"
       }
     ]
+  }
+}
+```
+
+### POST /api/user/logout
+
+Handle user logout and cleanup any server-side session data.
+
+**Authentication**: Required
+
+**Request Body:** None required
+
+**Response:**
+```json
+{
+  "message": "Logout processed successfully",
+  "timestamp": "2024-01-15T10:30:00.000Z"
+}
+```
+
+**Note**: For Choreo managed authentication, the actual logout is handled by the frontend redirecting to `/auth/logout`. This endpoint is for any server-side cleanup if needed.
+
+### GET /api/user/permissions
+
+Get user permissions, roles, and feature access for the authenticated user.
+
+**Authentication**: Required
+
+**Response:**
+```json
+{
+  "message": "User permissions retrieved successfully",
+  "permissions": {
+    "userId": "user-123",
+    "roles": ["user", "task-manager"],
+    "groups": ["developers", "team-leads"],
+    "permissions": [
+      "tasks:read",
+      "tasks:create",
+      "tasks:update",
+      "tasks:delete",
+      "profile:read",
+      "profile:update"
+    ],
+    "features": {
+      "canCreateTasks": true,
+      "canDeleteTasks": true,
+      "canViewAnalytics": true,
+      "canExportData": false,
+      "canManageTeam": false
+    }
   }
 }
 ```
@@ -513,6 +597,18 @@ await apiClient.deleteTask('task-id')
 
 ### cURL Examples
 
+**Root Endpoint:**
+```bash
+curl -X GET "https://your-api-url/" \
+  -H "Accept: application/json"
+```
+
+**Health Check:**
+```bash
+curl -X GET "https://your-api-url/health" \
+  -H "Accept: application/json"
+```
+
 **Get Tasks:**
 ```bash
 curl -X GET "https://your-api-url/api/tasks?status=todo" \
@@ -542,6 +638,27 @@ curl -X PUT "https://your-api-url/api/tasks/task-id" \
   }'
 ```
 
+**Get User Profile:**
+```bash
+curl -X GET "https://your-api-url/api/user/profile" \
+  -H "Accept: application/json" \
+  -H "x-jwt-assertion: YOUR_JWT_TOKEN"
+```
+
+**Get User Permissions:**
+```bash
+curl -X GET "https://your-api-url/api/user/permissions" \
+  -H "Accept: application/json" \
+  -H "x-jwt-assertion: YOUR_JWT_TOKEN"
+```
+
+**User Logout:**
+```bash
+curl -X POST "https://your-api-url/api/user/logout" \
+  -H "Accept: application/json" \
+  -H "x-jwt-assertion: YOUR_JWT_TOKEN"
+```
+
 ---
 
 ## 📊 Rate Limiting
@@ -567,6 +684,7 @@ X-RateLimit-Reset: 1642248000
 
 The API provides multiple health check endpoints for monitoring:
 
+- `/` - Root endpoint with API information
 - `/health` - Basic health status
 - `/health/detailed` - Comprehensive health information
 - `/health/ready` - Readiness probe
@@ -608,11 +726,31 @@ npm run dev
 ### Testing Endpoints
 
 ```bash
+# Root endpoint
+curl http://localhost:8080/
+
 # Health check
 curl http://localhost:8080/health
 
+# Detailed health check
+curl http://localhost:8080/health/detailed
+
+# Readiness probe
+curl http://localhost:8080/health/ready
+
+# Liveness probe
+curl http://localhost:8080/health/live
+
 # Test with mock authentication (development mode)
 curl -X GET http://localhost:8080/api/tasks \
+  -H "Content-Type: application/json"
+
+# Test user profile (development mode)
+curl -X GET http://localhost:8080/api/user/profile \
+  -H "Content-Type: application/json"
+
+# Test user permissions (development mode)
+curl -X GET http://localhost:8080/api/user/permissions \
   -H "Content-Type: application/json"
 ```
 
