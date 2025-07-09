@@ -59,7 +59,7 @@ The deployment process involves:
 
 2. **Buildpack Configuration**
    - **Buildpack**: Select **Node.js**
-   - **Language Version**: `18.x`
+   - **Language Version**: `20.x`
    - **Build Command**: `npm install` (default)
    - **Start Command**: `npm start` (default)
 

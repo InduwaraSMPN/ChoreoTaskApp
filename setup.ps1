@@ -46,15 +46,15 @@ function Test-NodeVersion {
         $nodeVersion = node --version
         $majorVersion = [int]($nodeVersion -replace 'v(\d+)\..*', '$1')
         
-        if ($majorVersion -ge 18) {
+        if ($majorVersion -ge 20) {
             Write-ColorOutput $Green "✓ Node.js $nodeVersion (compatible)"
             return $true
         } else {
-            Write-ColorOutput $Red "✗ Node.js $nodeVersion (requires v18+)"
+            Write-ColorOutput $Red "✗ Node.js $nodeVersion (requires v20.17.0+)"
             return $false
         }
     } catch {
-        Write-ColorOutput $Red "✗ Node.js not found. Please install Node.js 18+ from https://nodejs.org/"
+        Write-ColorOutput $Red "✗ Node.js not found. Please install Node.js 20.17.0+ from https://nodejs.org/"
         return $false
     }
 }

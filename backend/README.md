@@ -80,8 +80,8 @@ req.user = {
 ## 🛠️ Local Development
 
 ### Prerequisites
-- Node.js 18+ installed
-- npm or yarn package manager
+- Node.js 20.17.0+ installed
+- npm 10+ or yarn package manager
 
 ### Setup
 1. **Install dependencies**
@@ -129,7 +129,7 @@ CORS_ORIGIN=*              # CORS origin (use specific domains in production)
 3. Connect your GitHub repository
 4. Set **Component Directory** to `/backend`
 5. Select **Node.js** buildpack
-6. Set **Language Version** to `18.x`
+6. Set **Language Version** to `20.x`
 
 ### Step 3: Configure Component
 The `.choreo/component.yaml` file contains all necessary configuration:

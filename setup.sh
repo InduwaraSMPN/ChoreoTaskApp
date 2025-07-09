@@ -76,15 +76,15 @@ function check_node_version() {
         local node_version=$(node --version)
         local major_version=$(echo $node_version | sed 's/v\([0-9]*\).*/\1/')
         
-        if [ "$major_version" -ge 18 ]; then
+        if [ "$major_version" -ge 20 ]; then
             print_color $GREEN "✓ Node.js $node_version (compatible)"
             return 0
         else
-            print_color $RED "✗ Node.js $node_version (requires v18+)"
+            print_color $RED "✗ Node.js $node_version (requires v20.17.0+)"
             return 1
         fi
     else
-        print_color $RED "✗ Node.js not found. Please install Node.js 18+ from https://nodejs.org/"
+        print_color $RED "✗ Node.js not found. Please install Node.js 20.17.0+ from https://nodejs.org/"
         return 1
     fi
 }
