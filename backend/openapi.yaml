@@ -1,27 +1,10 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
-  title: Choreo Task Management API
-  description: |
-    RESTful API service for task management with user authentication.
-    This API demonstrates WSO2 Choreo's service component capabilities including:
-    - User authentication integration
-    - CRUD operations for task management
-    - Health monitoring endpoints
-    - OpenAPI specification compliance
-  version: 1.0.0
-  contact:
-    name: WSO2 Choreo Team
-    url: https://wso2.com/choreo/
-    email: choreo@wso2.com
-  license:
-    name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0
-
+  title: "Choreo Task Management API"
+  version: "1.0.0"
+  description: "RESTful API service for task management with user authentication."
 servers:
-  - url: http://localhost:3001
-    description: Local development server
-  - url: https://your-choreo-service-url.dev
-    description: Choreo development environment
+- url: "http://localhost:3001"
 
 paths:
   /health:
